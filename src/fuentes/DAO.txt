@@ -1,0 +1,51 @@
+public class CLASEDAO implements daoInterfaceCLASE
+{
+
+	@Override
+	public void alta(CLASE obj)
+	{
+		transaccion.begin();
+		em.persist(obj);
+		transaccion.commit();
+	}
+
+	@Override
+	public void baja(TIPO id)
+	{
+		transaccion.begin();
+		CLASE obj = em.find(CLASE.class, id);
+		em.remove(obj);
+		transaccion.commit();
+	}
+
+	@Override
+	public void modificacion(CLASE obj)
+	{
+		transaccion.begin();
+		em.merge(obj);
+		transaccion.commit();
+	}
+
+	@Override
+	public CLASE consulta(TIPO id)
+	{
+		transaccion.begin();
+		CLASE obj = em.find(CLASE.class, id);
+		transaccion.commit();
+		return obj;
+	}
+
+	@Override
+	public List<CLASE> consultaAll()
+	{	
+		Query query = em.createQuery("SELECT a FROM TCurso a", CLASE.class);
+		transaccion.begin();
+		List<CLASE> misCur = query.getResultList();
+		transaccion.commit();
+		return misCur;
+	}
+
+	@Override
+	public void cerrar(){em.close();}
+
+}

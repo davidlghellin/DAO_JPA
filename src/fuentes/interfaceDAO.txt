@@ -1,0 +1,15 @@
+public interface daoInterfaceCLASE
+{
+	static final EntityManagerFactory emf = Persistence
+			.createEntityManagerFactory("XXX");
+	static final EntityManager em = emf.createEntityManager();
+	static final EntityTransaction transaccion = em.getTransaction();
+
+	public void alta(CLASE obj);
+	public void baja(TIPO id);
+	public void modificacion(CLASE obj);
+	public CLASE consulta(TIPO id);
+	public List<CLASE> consultaAll();
+
+	public void cerrar();
+}
