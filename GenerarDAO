@@ -1,0 +1,89 @@
+package utils;
+
+/**
+ *
+ * @author David López González
+ */
+public class GenerarDAO
+{
+  //SpringPJA
+
+    public static void main(String[] args)
+    {
+        imprimir("Banco", "int");
+        // TODO analizar la carpeta dominio y de ahí, sacar el nombre de las clases
+        // TODO analizar la carpeta dominio y de ahí, sacar el tipo de dato correspondiente al id
+        // TODO que cree los ficheros correspondienetes en los paquetes correspondientes
+    }
+
+    public static void imprimir(String clase, String tipo)
+    {
+        imprimirInterface(clase, tipo);
+        System.out.println("");
+        imprimirDAO(clase, tipo);
+    }
+
+    public static void imprimirDAO(String clase, String tipo)
+    {
+        System.out.println("public class " + clase + "DAO implements daoInterface" + clase + "\n"
+                + "{\n"
+                + "\n"
+                + "    @PersistenceContext\n"
+                + "    EntityManager em;\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public boolean alta(" + clase + " " + clase.toLowerCase().charAt(0) + ")\n"
+                + "    {\n"
+                + "        try\n"
+                + "        {\n"
+                + "            em.persist(" + clase.toLowerCase().charAt(0) + ");\n"
+                + "        } catch (DataAccessException ex)\n"
+                + "        {\n"
+                + "            return false;\n"
+                + "        }\n"
+                + "\n"
+                + "        return true;\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public void baja(" + tipo + " id)\n"
+                + "    {\n"
+                + "        " + clase + " " + clase.toLowerCase().charAt(0) + " = this.consulta(id);\n"
+                + "        em.remove(" + clase.toLowerCase().charAt(0) + ");\n"
+                + "    }\n"
+                + "\n"
+                + "    @Override\n"
+                + "    public void modificacion(" + clase + " " + clase.toLowerCase().charAt(0) + ")\n"
+                + "    {\n"
+                + "        em.merge(" + clase.toLowerCase().charAt(0) + ");\n"
+                + "    }\n"
+                + "\n"
+                + "    @Transactional(readOnly = true)\n"
+                + "    @Override\n"
+                + "    public " + clase + " consulta(" + tipo + " id)\n"
+                + "    {\n"
+                + "        return em.find(" + clase + ".class, id);\n"
+                + "    }\n"
+                + "\n"
+                + "    @Transactional(readOnly = true)\n"
+                + "    @Override\n"
+                + "    public ArrayList<" + clase + "> consultaAll()\n"
+                + "    {\n"
+                + "        return (ArrayList<" + clase + ">) em.createNamedQuery(\"" + clase + ".findAll\", " + clase + ".class).getResultList();\n"
+                + "    }\n"
+                + "\n"
+                + "}");
+    }
+
+    public static void imprimirInterface(String clase, String tipo)
+    {
+        System.out.println("public interface daoInterface" + clase + "\n"
+                + "{\n"
+                + "     public boolean alta(" + clase + " " + clase.toLowerCase().charAt(0) + ");\n"
+                + "     public void baja(" + tipo + " id);\n"
+                + "     public void modificacion(" + clase + " " + clase.toLowerCase().charAt(0) + ");\n"
+                + "     public " + clase + " consulta(" + tipo + " id);\n"
+                + "     public ArrayList<" + clase + "> consultaAll();\n"
+                + "}");
+    }
+}
